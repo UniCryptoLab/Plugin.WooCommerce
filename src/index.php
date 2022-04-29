@@ -41,7 +41,8 @@ function woocommerce_unipayment_init() {
 			$this -> confirm_speed = $this -> settings['confirm_speed'];			
 			$this -> pay_currency = $this -> settings['pay_currency'];						
 			
-			$this -> processing_status = $this -> settings['processing_status'];			
+			$this -> processing_status = $this -> settings['processing_status'];
+			$this -> handle_expired_status =  $this -> settings['handle_expired_status'];
 			$this -> environment = $this -> settings['environment'];							
 			$this -> lang = str_replace('_', '-', get_locale());				
 			$this -> unipay_url = ($this -> environment == 'live') ? 'https://unipayment.io' : 'https://sandbox.unipayment.io';						
@@ -65,7 +66,7 @@ function woocommerce_unipayment_init() {
                 add_action( 'woocommerce_update_options_payment_gateways', array( &$this, 'process_admin_options' ) );
             } 		
 			
-            add_action( 'woocommerce_api_' . strtolower( get_class( $this ) ), array( $this, 'check_unipayment_response' ) );	
+            add_action( 'woocommerce_api_' . strtolower( get_class( $this ) ), array( $this, 'handel_ipn_notify' ) );	
 			
         }
 
@@ -117,7 +118,7 @@ function woocommerce_unipayment_init() {
 					'title'       => __( 'Confirm Speed', 'unipayment' ),
 					'type'        => 'select',
 					'default'     => 'medium',										
-					'description' => '',
+					'description' => __('This is a risk parameter for the merchant to configure how they want to fulfill orders depending on the number of block confirmations.', 'unipayment'),
 					'options'     => $confirm_speeds,
 				),
 				
@@ -125,7 +126,7 @@ function woocommerce_unipayment_init() {
 					'title'       => __( 'Pay Currency', 'unipayment' ),
 					'type'        => 'select',
 					'default'     => '-',										
-					'description' => '',
+					'description' => __('Select the default pay currency used by the invoice.', 'unipayment'),
 					'options'     => $pay_currencies,
 				),
 				
@@ -133,15 +134,27 @@ function woocommerce_unipayment_init() {
 					'title'       => __( 'Processing Status', 'unipayment' ),
 					'type'        => 'select',
 					'default'     => 'Confirmed',										
-					'description' => 'select which status is confirmed payment is done',
+					'description' => __('Which status will be considered the order paid.', 'unipayment'),
 					'options'     => $processing_statuses,
-				),				
+				),	
+				'handle_expired_status' => array(
+                        'title' => __('Handel Expired Status', 'unipayment'),
+                        'type' => 'select',
+                        'description' => __('If set to <b>Yes</b>, set the order to failed when the invoice has expired and has been notified by the UniPayment IPN.', 'unipayment'),
+                       
+                        'options' => array(
+                            '0'=>'No',
+                            '1'=>'Yes'
+                        ),
+                        'default' => '0',
+                    ),
+			
 				
 				'environment' => array(
 					'title'       => __( 'Environment', 'unipayment' ),
 					'type'        => 'select',
 					'default'     => 'test',										
-					'description' => '',
+					'description' => __('Select which enviroment the plugin is connected with.', 'unipayment'),
 					'options'     => $env_list,
 				)				
            );
@@ -258,10 +271,10 @@ function woocommerce_unipayment_init() {
 					
         }
         
-        
-        function check_unipayment_response(){
+        //https://woocommerce.com/document/managing-orders/#troubleshooting
+
+        function handel_ipn_notify(){
 			global $woocommerce, $wpdb;
-			
            if($_GET['wc-api']== 'wc_unipayment'){			   
 			   
 			   $notify_json = file_get_contents('php://input');
@@ -269,16 +282,17 @@ function woocommerce_unipayment_init() {
 			   $order_id =  $notify_ar['order_id'];
 			   $this->log->add('unipayment log:', 'order_id: '.$order_id.' notify: '.$notify_json);
 				   
-			   
-			   
+
+			   $this->uniPaymentClient->getConfig()->setAppId($this->app_id);
+			   $this->uniPaymentClient->getConfig()->setApiKey($this->api_key);
+
 			   $queryInvoiceRequest = new \UniPayment\Client\Model\QueryInvoiceRequest();
 			   $queryInvoiceRequest->setOrderId($order_id);
 			   
-			   $this->uniPaymentClient->getConfig()->setAppId($this->app_id);
-			   $this->uniPaymentClient->getConfig()->setApiKey($this->api_key);
 			   
 			   $status = 'New';
 			   $invoice_id = '';
+
 			   $response = $this->uniPaymentClient->queryInvoices($queryInvoiceRequest);
 			   
 			   if ($response['code'] == 'OK'){
@@ -286,12 +300,12 @@ function woocommerce_unipayment_init() {
 				   $status = $trans['status'];
 				   $invoice_id  = $trans['invoice_id'];
 				   $this->log->add('unipayment log:',  'invoice of order: '.$order_id.' : '.$response);
-			   }
+			   
 			   
                 
-				 $order = new WC_Order($order_id);				 
+				$order = new WC_Order($order_id);				 
 		   		
-			   
+			   	$this->log->add('unipayment log:',  'order status:'.$order->status.' handle expire:'.$this -> handle_expired_status);
 				 switch($status)
 				{
 					case 'New':
@@ -308,7 +322,7 @@ function woocommerce_unipayment_init() {
 					case 'Confirmed':
 					{
 						$order -> add_order_note('Invoice : '.$invoice_id.' has changed to confirmed');
-						if($this -> processing_status == $status)
+						if($this -> processing_status == $status && ($order->status == 'pending' || $order->status == 'failed') )
 						{
 							$order -> payment_complete();		
 							$order -> add_order_note('Payment Completed');		
@@ -319,7 +333,7 @@ function woocommerce_unipayment_init() {
 					case 'Complete':
 					{
 						$order -> add_order_note('Invoice : '.$invoice_id.' has changed to complete');
-						if($this -> processing_status == $status)
+						if($this -> processing_status == $status && ($order->status == 'pending' || $order->status == 'failed') )
 						{
 							$order -> payment_complete();		
 							$order -> add_order_note('Payment Completed');		
@@ -330,7 +344,10 @@ function woocommerce_unipayment_init() {
 					case 'Expired':
 					{
 						$order -> add_order_note('Invoice : '.$invoice_id.' has chnaged to expired');
-						$order->update_status('failed', __('Payment Expired', 'unipayment'));
+						if($this -> handle_expired_status == 1)
+						{						
+							$order->update_status('failed', __('Payment Expired', 'unipayment'));
+						}
 						break;
 					}
 					case 'Invalid':
@@ -346,7 +363,12 @@ function woocommerce_unipayment_init() {
 				}
 
 				
-			   echo "SUCCESS";				
+			   echo "SUCCESS";
+			 }
+			 else
+				{
+				echo "Fail";
+				}		
 			   exit;
 
 
