@@ -1,9 +1,9 @@
 === UniPayment.io Payment Gateway for WooCommerce ===
 Contributors: UniPayment
-Tags: bitcoin, litecoin, altcoins, altcoin, dogecoin, feathercoin, netcoin, peercoin, blackcoin, darkcoin, ripple, ethereum, ether, woocommerce
+Tags: bitcoin, ethereum, usdt, usc, busd, woocommerce
 Requires at least: 3.7.0
 Tested up to: 5.8.0
-Stable tag: 1.0.14
+Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
