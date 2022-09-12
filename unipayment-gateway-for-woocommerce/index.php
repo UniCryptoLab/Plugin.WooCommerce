@@ -1,8 +1,8 @@
 <?php
 /*
-Plugin Name: UniPayment for WooCommerce
+Plugin Name: UniPayment Gateway for WooCommerce
 Description: UniPayment Gateway for WooCommerce
-Version: 1.2.4
+Version: 1.0.0
 Author: UniPayment
 Author URI: https://www.unipayment.io
 WC requires at least: 3.0
@@ -45,7 +45,7 @@ function woocommerce_unipayment_init() {
 			$this -> handle_expired_status =  $this -> settings['handle_expired_status'];
 			$this -> environment = $this -> settings['environment'];							
 			$this -> lang = str_replace('_', '-', get_locale());				
-			$this -> unipay_url = ($this -> environment == 'live') ? 'https://unipayment.io' : 'https://sandbox.unipayment.io';						
+			$this -> unipay_url = ($this -> environment == 'live') ? 'https://api.unipayment.io' : 'https://sandbox-api.unipayment.io';						
 			
 			$this -> currency_code = get_woocommerce_currency();			
 			
@@ -126,7 +126,7 @@ function woocommerce_unipayment_init() {
 					'title'       => __( 'Pay Currency', 'unipayment' ),
 					'type'        => 'select',
 					'default'     => '-',										
-					'description' => __('Select the default pay currency used by the invoice.', 'unipayment'),
+					'description' => __('Select the default pay currency used by the invoice, If not set customer will select on invoice page.', 'unipayment'),
 					'options'     => $pay_currencies,
 				),
 				
@@ -134,13 +134,13 @@ function woocommerce_unipayment_init() {
 					'title'       => __( 'Processing Status', 'unipayment' ),
 					'type'        => 'select',
 					'default'     => 'Confirmed',										
-					'description' => __('Which status will be considered the order paid.', 'unipayment'),
+					'description' => __('Which status will be considered the order is paid.', 'unipayment'),
 					'options'     => $processing_statuses,
 				),	
 				'handle_expired_status' => array(
                         'title' => __('Handel Expired Status', 'unipayment'),
                         'type' => 'select',
-                        'description' => __('If set to <b>Yes</b>, set the order to failed when the invoice has expired and has been notified by the UniPayment IPN.', 'unipayment'),
+                        'description' => __('If set to <b>Yes</b>, the order will set to failed when the invoice has expired and has been notified by the UniPayment IPN.', 'unipayment'),
                        
                         'options' => array(
                             '0'=>'No',
@@ -174,34 +174,14 @@ function woocommerce_unipayment_init() {
 
     public function payment_fields()
     {
-
         if($this -> description) echo wpautop(wptexturize($this -> description));
-		$pay_currencies = $this->get_currencies();							
-		if ($this -> pay_currency == '-') {
-	?>	
-	<fieldset>
-		<div class="clear"></div>
-		<p class="form-row form-row-first">
-			<label for="pay_currency"><?php _e("Pay Currency", 'unipayment') ?> <span class="required">*</span></label>
-				<select name="pay_currency" id="pay_currency" class="wc-credit-card-form-card-cvc" style="width: auto;">						
-						<?php
-							foreach($pay_currencies as $key => $vale)	
-								
-								printf('<option value="%s">%s</option>', $key, $vale);							
-						?>
-					</select> 				
-		</p>
-		<div class="clear"></div>				
-	</fieldset>				
-	<?php
-		}
-
     }
 		
 	public  function get_currencies ($fiat = false)		
     {		
 	  if (empty($this -> uniPaymentClient))	 {
-		  	$this -> unipay_url = ($this -> environment == 'live') ? 'https://unipayment.io' : 'https://sandbox.unipayment.io';									$this -> uniPaymentClient = new \UniPayment\Client\UniPaymentClient();
+		  	$this -> unipay_url = ($this -> environment == 'live') ? 'https://api.unipayment.io' : 'https://sandbox-api.unipayment.io';									
+			$this -> uniPaymentClient = new \UniPayment\Client\UniPaymentClient();
 			$this -> uniPaymentClient->getConfig()->setDebug(false);
 			$this -> uniPaymentClient->getConfig()->setApiHost($this -> unipay_url);		  
 	  };
@@ -234,30 +214,35 @@ function woocommerce_unipayment_init() {
 			$desc = 'Order No : '.$order_id;
 			$RedirectUrl = $this->get_return_url( $order );
 			$setNotifyUrl = get_site_url().'/index.php?wc-api=wc_unipayment&act=notify';			
-			if ($this -> pay_currency == '-') $pay_currency = $_POST['pay_currency'];
-
-			else $pay_currency = $this->pay_currency;
-		
 			
+	
 			$this->uniPaymentClient->getConfig()->setAppId($this->app_id);
-        	$this->uniPaymentClient->getConfig()->setApiKey($this->api_key);
+        		$this->uniPaymentClient->getConfig()->setApiKey($this->api_key);
 			
 			$createInvoiceRequest = new \UniPayment\Client\Model\CreateInvoiceRequest();
 
-        	$createInvoiceRequest->setPriceAmount($amount);
-        	$createInvoiceRequest->setPriceCurrency($this->currency_code);
-        	$createInvoiceRequest->setPayCurrency($pay_currency);
-        	$createInvoiceRequest->setOrderId($order_id);
-        	$createInvoiceRequest->setConfirmSpeed($this->confirm_speed);
-        	$createInvoiceRequest->setRedirectUrl($RedirectUrl);
-        	$createInvoiceRequest->setNotifyUrl($setNotifyUrl);
-        	$createInvoiceRequest->setTitle($desc);
-        	$createInvoiceRequest->setDescription($desc);
-        	$createInvoiceRequest->setLang($this->lang);
-        	$response = $this->uniPaymentClient->createInvoice($createInvoiceRequest);
+        		$createInvoiceRequest->setPriceAmount($amount);
+        		$createInvoiceRequest->setPriceCurrency($this->currency_code);
+
+			// if we set pay_currency, fill pay_currency in request
+			if ($this -> pay_currency != '-')
+			{
+				$this->log->add('unipayment log:','pay_currency value:'.$this -> pay_currency);
+        			$createInvoiceRequest->setPayCurrency($this -> pay_currency);
+			}
+
 			
+        		$createInvoiceRequest->setOrderId($order_id);
+        		$createInvoiceRequest->setConfirmSpeed($this->confirm_speed);
+        		$createInvoiceRequest->setRedirectUrl($RedirectUrl);
+        		$createInvoiceRequest->setNotifyUrl($setNotifyUrl);
+        		$createInvoiceRequest->setTitle($desc);
+        		$createInvoiceRequest->setDescription($desc);
+        		$createInvoiceRequest->setLang($this->lang);
+        		$response = $this->uniPaymentClient->createInvoice($createInvoiceRequest);
 			
-			
+			$this->log->add('unipayment log:',  'create invoice:'.$createInvoiceRequest);
+
 			if ($response['code'] == 'OK'){
 				$payurl = $response->getData()->getInvoiceUrl();	
 				return array('result' => 'success', 'redirect' => $payurl);		
@@ -280,32 +265,27 @@ function woocommerce_unipayment_init() {
 			   $notify_json = file_get_contents('php://input');
 			   $notify_ar = json_decode($notify_json, true);
 			   $order_id =  $notify_ar['order_id'];
-			   $this->log->add('unipayment log:', 'order_id: '.$order_id.' notify: '.$notify_json);
-				   
+                $invoice_id  = $notify_ar['invoice_id'];
+			   $this->log->add('unipayment log:', 'order: '.$order_id.' / '.$invoice_id.' notify: '.$notify_json);
 
 			   $this->uniPaymentClient->getConfig()->setAppId($this->app_id);
 			   $this->uniPaymentClient->getConfig()->setApiKey($this->api_key);
 
-			   $queryInvoiceRequest = new \UniPayment\Client\Model\QueryInvoiceRequest();
-			   $queryInvoiceRequest->setOrderId($order_id);
-			   
-			   
+			   //check ipn result
+			   $response = $this->uniPaymentClient->checkIpn($notify_json);
+			   $this->log->add('unipayment log:',  'checkIpn result: '.$response);
+
 			   $status = 'New';
 			   $invoice_id = '';
 
-			   $response = $this->uniPaymentClient->queryInvoices($queryInvoiceRequest);
-			   
 			   if ($response['code'] == 'OK'){
-				   $trans = $response['data']['models'][0];
-				   $status = $trans['status'];
-				   $invoice_id  = $trans['invoice_id'];
-				   $this->log->add('unipayment log:',  'invoice of order: '.$order_id.' : '.$response);
+				   $error_status = $notify_ar['error_status'];
+				   $status = $notify_ar['status'];
+				   
 			   
-			   
-                
 				$order = new WC_Order($order_id);				 
 		   		
-			   	$this->log->add('unipayment log:',  'order status:'.$order->status.' handle expire:'.$this -> handle_expired_status);
+			   	$this->log->add('unipayment log:',  'order local status:'.$order->status.' remote status:'.$status.' error_status:'.$error_status.' handle expire config:'.$this -> handle_expired_status);
 				 switch($status)
 				{
 					case 'New':
@@ -315,7 +295,7 @@ function woocommerce_unipayment_init() {
 					}
 					case 'Paid':
 					{
-						$order -> add_order_note('Invoice : '.$invoice_id.' transaction detected on blockchain');	
+						$order -> add_order_note('Invoice : '.$invoice_id.' payment detected on blockchain');	
 						break;
 					}
 
@@ -343,7 +323,7 @@ function woocommerce_unipayment_init() {
 					}
 					case 'Expired':
 					{
-						$order -> add_order_note('Invoice : '.$invoice_id.' has chnaged to expired');
+						$order -> add_order_note('Invoice : '.$invoice_id.' has changed to expired');
 						if($this -> handle_expired_status == 1)
 						{						
 							$order->update_status('failed', __('Payment Expired', 'unipayment'));

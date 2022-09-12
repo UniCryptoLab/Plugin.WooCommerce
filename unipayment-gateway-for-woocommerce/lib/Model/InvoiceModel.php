@@ -265,7 +265,7 @@ class InvoiceModel implements ModelInterface, ArrayAccess
      *
      * @return string
      */
-    public function getNetwork(): string
+    public function getNetwork(): ?string
     {
         return $this->container['network'];
     }
@@ -289,7 +289,7 @@ class InvoiceModel implements ModelInterface, ArrayAccess
      *
      * @return string
      */
-    public function getAddress(): string
+    public function getAddress(): ?string
     {
         return $this->container['address'];
     }
@@ -457,7 +457,7 @@ class InvoiceModel implements ModelInterface, ArrayAccess
      *
      * @return string
      */
-    public function getPayCurrency(): string
+    public function getPayCurrency(): ?string
     {
         return $this->container['pay_currency'];
     }
