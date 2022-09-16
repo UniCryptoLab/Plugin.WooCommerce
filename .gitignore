@@ -5,8 +5,13 @@ Thumbs.db:encryptable
 ehthumbs.db
 ehthumbs_vista.db
 
-*.DS_Store
+.DS_Store
+**/.DS_Store
 .zip
+
+.idea
+
+*.zip
 
 # Dump file
 *.stackdump

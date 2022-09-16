@@ -31,7 +31,14 @@ class Configuration
      *
      * @var string
      */
-    protected $apiHost = '';
+    protected $apiHost = 'https://api.unipayment.io';
+
+    /**
+     * Sandbox switch (default set to false)
+     *
+     * @var bool
+     */
+    protected $isSandbox = false;
 
     /**
      * Api Version
@@ -143,6 +150,37 @@ class Configuration
     public function getHost()
     {
         return $this->apiHost;
+    }
+
+    /**
+     * Sets isSandbox flag
+     *
+     * @param bool $isSandbox IsSandbox flag
+     *
+     * @return $this
+     */
+    public function setIsSandbox($isSandbox)
+    {
+        $this->isSandbox = $isSandbox;
+        if($this->isSandbox)
+        {
+            $this->apiHost="https://sandbox-api.unipayment.io";
+        }
+        else
+        {
+            $this->apiHost="https://api.unipayment.io";
+        }
+        return $this;
+    }
+
+    /**
+     * Gets the isSandbox flag
+     *
+     * @return bool
+     */
+    public function getIsSandbox()
+    {
+        return $this->isSandbox;
     }
 
     /**
