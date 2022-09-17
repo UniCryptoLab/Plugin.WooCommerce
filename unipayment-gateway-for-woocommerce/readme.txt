@@ -2,8 +2,8 @@
 Contributors: UniPayment
 Tags: bitcoin, ethereum, usdt, usc, busd, woocommerce
 Requires at least: 3.7.0
-Tested up to: 5.8.0
-Stable tag: 1.0.0
+Tested up to: 6.0.2
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -25,6 +25,8 @@ https://www.unipayment.io
 1. Click "Save changes" and the gateway will be active.
 
 == Changelog ==
+= 1.0.1 =
+* fix some issues under wordpress guildlines.
 
 = 1.0.0 =
 * Initial release.

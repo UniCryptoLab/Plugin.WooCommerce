@@ -2,12 +2,12 @@
 /*
 Plugin Name: UniPayment Gateway for WooCommerce
 Description: UniPayment Gateway for WooCommerce
-Version: 1.0.0
+Version: 1.0.1
 Author: UniPayment
 Author URI: https://www.unipayment.io
 WC requires at least: 3.0
-WC tested up to: 4.4.1
-License: 
+WC tested up to: 6.9.2
+License:
  */
 
 require_once dirname(__FILE__).'/vendor/autoload.php';
@@ -29,11 +29,13 @@ function woocommerce_unipayment_init()
 
         public function __construct()
         {
+            $this->log = new WC_Logger();
+            $this->log->add('unipayment log:', 'wc unpayment gateway init');
             $this->id = 'unipayment';
             $this->method_title = __('UniPayment', 'unipayment');
             $this->icon = '';
             $this->has_fields = false;
-            $this->init_form_fields();
+
             $this->init_settings();
             $this->title = $this->settings['title'];
             $this->description = $this->settings['description'];
@@ -48,16 +50,14 @@ function woocommerce_unipayment_init()
             $this->environment = $this->settings['environment'];
             $this->lang = str_replace('_', '-', get_locale());
 
-
             $this->currency_code = get_woocommerce_currency();
 
             $this->uniPaymentClient = new \UniPayment\Client\UniPaymentClient();
             $this->uniPaymentClient->getConfig()->setDebug(false);
-            $this->uniPaymentClient->getConfig()->setIsSandbox($this->environment == 'SandBox');
+            $this->uniPaymentClient->getConfig()->setIsSandbox($this->environment == 'test');
 
-
-            $this->log = new WC_Logger();
-
+            //init form fields after client is inited
+            $this->init_form_fields();
 
             add_action('valid-unipayment-request', array(&$this, 'successful_request'));
 
@@ -165,9 +165,8 @@ function woocommerce_unipayment_init()
 
         public function admin_options()
         {
-
             echo '<h3>' . __('UniPayment Payment Gateway', 'unipayment') . '</h3>';
-            echo '<p>' . __('UniPayment is most popular payment gateway') . '</p>';
+            echo '<p>' . __('Accept online crypto payments by integrating the robust, modern, and multi-functional cryptocurrency payment gateway- UniPayment.') . '</p>';
             echo '<table class="form-table">';
             $this->generate_settings_html();
             echo '</table>';
@@ -181,11 +180,6 @@ function woocommerce_unipayment_init()
 
         public function get_currencies($fiat = false)
         {
-            if (empty($this->uniPaymentClient)) {
-                $this->uniPaymentClient = new \UniPayment\Client\UniPaymentClient();
-                $this->uniPaymentClient->getConfig()->setDebug(false);
-                $this->uniPaymentClient->getConfig()->setIsSandbox($this->environment == 'SandBox');
-            };
             $currencies = array();
             $apires = $this->uniPaymentClient->getCurrencies();
             if ($apires['code'] == 'OK') {
@@ -194,7 +188,6 @@ function woocommerce_unipayment_init()
                 }
             }
             return $currencies;
-
         }
 
 
@@ -228,7 +221,6 @@ function woocommerce_unipayment_init()
                 $this->log->add('unipayment log:', 'pay_currency value:' . $this->pay_currency);
                 $createInvoiceRequest->setPayCurrency($this->pay_currency);
             }
-
 
             $createInvoiceRequest->setOrderId($order_id);
             $createInvoiceRequest->setConfirmSpeed($this->confirm_speed);
