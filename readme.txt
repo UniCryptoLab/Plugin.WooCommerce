@@ -47,14 +47,14 @@ After you have installed the UniPayment plugin, the configuration steps are:
 	* Go to tab **ApiKey**, copy AppId and ApiKey.
 2. Log in to your WordPress admin panel, select WooCommerce > Payments and click on the **Set up** button next to the UniPayment Payment methods
 	* Paste the AppId and ApiKey value into the appropriate field.
-	* Click "Save changes" at the bottom of the page.
+	* Click **Save changes** at the bottom of the page.
 
 
 = Order Status Handle =
 
 UniPayment will send IPN (Instant Payment Notification) to plugin when status of invoice changed. An order note will automatically be added to WooCommerce order.
 
-* When the buyer checkout with UniPayment, he is redirected to the invoice page while WooCommerce order is "Pending".
+* When the buyer checkout with UniPayment, he is redirected to the invoice page while WooCommerce order is **Pending**.
 * The status of the WooCommerce order will change to **Processing**  when UniPayment invoice is confirmed or completed via the plugin settings.
 * If UniPayment invoice expires before the buyer completed the payment, the WooCommerce order will be marked  as **Failed** via the plugin settings.
 
