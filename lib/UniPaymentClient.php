@@ -312,8 +312,8 @@ class UniPaymentClient
         $url = $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : '');
         $requestMethod = 'POST';
         $authSignature = $this->signRequest(
-            $this->config->getAppId(),
-            $this->config->getApiKey(),
+            $this->config->getClientId(),
+            $this->config->getClientSecret(),
             $url,
             $requestMethod,
             $httpBody
@@ -562,8 +562,8 @@ class UniPaymentClient
         $url = $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : '');
         $requestMethod = 'GET';
         $authSignature = $this->signRequest(
-            $this->config->getAppId(),
-            $this->config->getApiKey(),
+            $this->config->getClientId(),
+            $this->config->getClientSecret(),
             $url,
             $requestMethod,
             $httpBody
@@ -851,8 +851,8 @@ class UniPaymentClient
         $url = $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : '');
         $requestMethod = 'GET';
         $authSignature = $this->signRequest(
-            $this->config->getAppId(),
-            $this->config->getApiKey(),
+            $this->config->getClientId(),
+            $this->config->getClientSecret(),
             $url,
             $requestMethod,
             $httpBody
@@ -1121,8 +1121,8 @@ class UniPaymentClient
         $url = $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : '');
         $requestMethod = 'GET';
         $authSignature = $this->signRequest(
-            $this->config->getAppId(),
-            $this->config->getApiKey(),
+            $this->config->getClientId(),
+            $this->config->getClientSecret(),
             $url,
             $requestMethod,
             $httpBody
@@ -1391,8 +1391,8 @@ class UniPaymentClient
         $url = $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : '');
         $requestMethod = 'GET';
         $authSignature = $this->signRequest(
-            $this->config->getAppId(),
-            $this->config->getApiKey(),
+            $this->config->getClientId(),
+            $this->config->getClientSecret(),
             $url,
             $requestMethod,
             $httpBody
@@ -1661,8 +1661,8 @@ class UniPaymentClient
         $url = $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : '');
         $requestMethod = 'GET';
         $authSignature = $this->signRequest(
-            $this->config->getAppId(),
-            $this->config->getApiKey(),
+            $this->config->getClientId(),
+            $this->config->getClientSecret(),
             $url,
             $requestMethod,
             $httpBody
@@ -1911,8 +1911,8 @@ class UniPaymentClient
         $url = $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : '');
         $requestMethod = 'GET';
         $authSignature = $this->signRequest(
-            $this->config->getAppId(),
-            $this->config->getApiKey(),
+            $this->config->getClientId(),
+            $this->config->getClientSecret(),
             $url,
             $requestMethod,
             $httpBody
@@ -2176,8 +2176,8 @@ class UniPaymentClient
         $url = $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : '');
         $requestMethod = 'POST';
         $authSignature = $this->signRequest(
-            $this->config->getAppId(),
-            $this->config->getApiKey(),
+            $this->config->getClientId(),
+            $this->config->getClientSecret(),
             $url,
             $requestMethod,
             $httpBody
@@ -2213,14 +2213,14 @@ class UniPaymentClient
 
     /**
      * Sign Request
-     * @param $appId - APP ID
-     * @param $apiKey - API Key
+     * @param $clientId - Client ID
+     * @param $clientSecret - Client Secret
      * @param $uri - Request URI
      * @param $requestHttpMethod - HTTP Method
      * @param $body - Request Body
      * @return string Hash String
      */
-    protected function signRequest($appId, $apiKey, $uri, $requestHttpMethod, $body)
+    protected function signRequest($clientId, $clientSecret, $uri, $requestHttpMethod, $body)
     {
         $requestUri = urlencode(strtolower($uri));
         $requestContentBase64String = '';
@@ -2230,9 +2230,9 @@ class UniPaymentClient
         }
         $requestTimeStamp = time();
         $nonce = str_replace('-', "", uniqid(32));
-        $signatureRawData = $appId . $requestHttpMethod . $requestUri . $requestTimeStamp . $nonce
+        $signatureRawData = $clientId . $requestHttpMethod . $requestUri . $requestTimeStamp . $nonce
             . $requestContentBase64String;
-        $signature = hash_hmac('sha256', $signatureRawData, $apiKey, true);
-        return $appId . ":" . base64_encode($signature) . ":" . $nonce . ":" . $requestTimeStamp;
+        $signature = hash_hmac('sha256', $signatureRawData, $clientSecret, true);
+        return $clientId . ":" . base64_encode($signature) . ":" . $nonce . ":" . $requestTimeStamp;
     }
 }

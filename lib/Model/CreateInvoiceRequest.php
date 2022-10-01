@@ -28,6 +28,7 @@ class CreateInvoiceRequest implements ModelInterface, ArrayAccess
      * @var string[]
      */
     protected static $fieldTypes = [
+        'app_id' => 'string',
         'title' => 'string',
         'description' => 'string',
         'lang' => 'string',
@@ -46,6 +47,7 @@ class CreateInvoiceRequest implements ModelInterface, ArrayAccess
      * @var string[]
      */
     protected static $fieldFormats = [
+        'app_id' => null,
         'title' => null,
         'description' => null,
         'lang' => null,
@@ -85,6 +87,7 @@ class CreateInvoiceRequest implements ModelInterface, ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = [
+        'app_id' => 'app_id',
         'title' => 'title',
         'description' => 'description',
         'lang' => 'lang',
@@ -103,6 +106,7 @@ class CreateInvoiceRequest implements ModelInterface, ArrayAccess
      * @var string[]
      */
     protected static $setters = [
+        'app_id' => 'setAppId',
         'title' => 'setTitle',
         'description' => 'setDescription',
         'lang' => 'setLang',
@@ -121,6 +125,7 @@ class CreateInvoiceRequest implements ModelInterface, ArrayAccess
      * @var string[]
      */
     protected static $getters = [
+        'app_id' => 'getAppId',
         'title' => 'getTitle',
         'description' => 'getDescription',
         'lang' => 'getLang',
@@ -206,6 +211,7 @@ class CreateInvoiceRequest implements ModelInterface, ArrayAccess
      */
     public function __construct(array $data = null)
     {
+        $this->container['app_id'] = $data['app_id'] ?? null;
         $this->container['title'] = $data['title'] ?? null;
         $this->container['description'] = $data['description'] ?? null;
         $this->container['lang'] = $data['lang'] ?? null;
@@ -250,6 +256,29 @@ class CreateInvoiceRequest implements ModelInterface, ArrayAccess
         return count($this->listInvalidProperties()) === 0;
     }
 
+    /**
+     * Gets app_id
+     *
+     * @return string
+     */
+    public function getAppId()
+    {
+        return $this->container['app_id'];
+    }
+
+    /**
+     * Sets app_id
+     *
+     * @param string $title title
+     *
+     * @return $this
+     */
+    public function setAppId(string $title): CreateInvoiceRequest
+    {
+        $this->container['app_id'] = $title;
+
+        return $this;
+    }
 
     /**
      * Gets title

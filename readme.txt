@@ -3,7 +3,7 @@ Contributors: UniPayment
 Tags: unipayment, bitcoin, ethereum, usdt, usc, busd, payment, cryptocurrency, woocommerce
 Requires at least: 4.9
 Tested up to: 6.0.2
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -75,6 +75,9 @@ UniPayment will send IPN (Instant Payment Notification) to plugin when status of
 
 
 == Changelog ==
+= 1.0.2 =
+* update unipayment sdk
+
 = 1.0.1 =
 * fix some issues under wordpress GuildLines.
 

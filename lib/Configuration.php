@@ -13,18 +13,18 @@ class Configuration
     private static $defaultConfiguration;
 
     /**
-     * APP ID
+     * Client ID
      *
      * @var string
      */
-    protected $appId = '';
+    protected $clientId = '';
 
     /**
-     * Api Key
+     * Client Secret
      *
      * @var string
      */
-    protected $apiKey = '';
+    protected $clientSecret = '';
 
     /**
      * Api Host
@@ -52,7 +52,7 @@ class Configuration
      *
      * @var string
      */
-    protected $userAgent = 'unipayment_sdk_php/1.0.0.0';
+    protected $userAgent = 'unipayment_sdk_php/1.0.1';
 
     /**
      * Debug switch (default set to false)
@@ -84,38 +84,38 @@ class Configuration
     }
 
     /**
-     * Set APP ID
+     * Set Client ID
      *
-     * @param string $appId APP ID
+     * @param string $clientId Client ID
      *
      * @return $this
      */
-    public function setAppId($appId)
+    public function setClientId($clientId)
     {
-        $this->appId = $appId;
+        $this->clientId = $clientId;
         return $this;
     }
 
     /**
-     * Gets the APP ID
+     * Gets the Client ID
      *
-     * @return string APP ID
+     * @return string Client ID
      */
-    public function getAppId()
+    public function getClientId()
     {
-        return $this->appId;
+        return $this->clientId;
     }
 
     /**
-     * Set API key
+     * Set Client Secret
      *
-     * @param string $apiKey API key
+     * @param string $clientSecret  Client Secret
      *
      * @return $this
      */
-    public function setApiKey($apiKey)
+    public function setClientSecret($clientSecret)
     {
-        $this->apiKey = $apiKey;
+        $this->clientSecret = $clientSecret;
         return $this;
     }
 
@@ -124,9 +124,9 @@ class Configuration
      *
      * @return string API key
      */
-    public function getApiKey()
+    public function getClientSecret()
     {
-        return $this->apiKey;
+        return $this->clientSecret;
     }
 
     /**

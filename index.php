@@ -40,8 +40,9 @@ function woocommerce_unipayment_init()
             $this->title = $this->settings['title'];
             $this->description = $this->settings['description'];
             $this->method_description = 'UniPayment Gateway for Woocommerce';
+            $this->client_id = $this->settings['client_id'];
+            $this->client_secret = $this->settings['client_secret'];
             $this->app_id = $this->settings['app_id'];
-            $this->api_key = $this->settings['api_key'];
             $this->confirm_speed = $this->settings['confirm_speed'];
             $this->pay_currency = $this->settings['pay_currency'];
 
@@ -104,16 +105,22 @@ function woocommerce_unipayment_init()
                     'default' => __('Pay securely by UniPayment.', 'unipayment')
                 ),
 
-                'app_id' => array(
-                    'title' => __('App ID', 'unipayment'),
+                'client_id' => array(
+                    'title' => __('Client ID', 'unipayment'),
                     'type' => 'text',
-                    'description' => __('Enter App ID Given by UniPayment')
+                    'description' => __('Enter Client ID Given by UniPayment')
                 ),
 
-                'api_key' => array(
-                    'title' => __('API Key', 'unipayment'),
+                'client_secret' => array(
+                    'title' => __('Client Secret', 'unipayment'),
                     'type' => 'text',
-                    'description' => __('Enter API Key Given by UniPayment')
+                    'description' => __('Enter Client Secret Given by UniPayment')
+                ),
+
+                'app_id' => array(
+                    'title' => __('Payment App ID', 'unipayment'),
+                    'type' => 'text',
+                    'description' => __('Enter Payment App ID Given by UniPayment')
                 ),
 
                 'confirm_speed' => array(
@@ -208,11 +215,12 @@ function woocommerce_unipayment_init()
             $setNotifyUrl = get_site_url() . '/index.php?wc-api=wc_unipayment&act=notify';
 
 
-            $this->uniPaymentClient->getConfig()->setAppId($this->app_id);
-            $this->uniPaymentClient->getConfig()->setApiKey($this->api_key);
+            $this->uniPaymentClient->getConfig()->setClientId($this->client_id);
+            $this->uniPaymentClient->getConfig()->setClientSecret($this->client_secret);
 
             $createInvoiceRequest = new \UniPayment\Client\Model\CreateInvoiceRequest();
 
+            $createInvoiceRequest->setAppId($this->app_id);
             $createInvoiceRequest->setPriceAmount($amount);
             $createInvoiceRequest->setPriceCurrency($this->currency_code);
 
@@ -258,15 +266,14 @@ function woocommerce_unipayment_init()
                 $invoice_id = $notify_ar['invoice_id'];
                 $this->log->add('unipayment log:', 'order: ' . $order_id . ' / ' . $invoice_id . ' notify: ' . $notify_json);
 
-                $this->uniPaymentClient->getConfig()->setAppId($this->app_id);
-                $this->uniPaymentClient->getConfig()->setApiKey($this->api_key);
+                $this->uniPaymentClient->getConfig()->setClientId($this->client_id);
+                $this->uniPaymentClient->getConfig()->setClientSecret($this->client_secret);
 
                 //check ipn result
                 $response = $this->uniPaymentClient->checkIpn($notify_json);
                 $this->log->add('unipayment log:', 'checkIpn result: ' . $response);
 
                 $status = 'New';
-                $invoice_id = '';
 
                 if ($response['code'] == 'OK') {
                     $error_status = $notify_ar['error_status'];
@@ -276,12 +283,6 @@ function woocommerce_unipayment_init()
                     $order = new WC_Order($order_id);
                     $this->log->add('unipayment log:', 'order local status:' . $order->status . ' remote status:' . $status . ' error_status:' . $error_status . ' handle expire config:' . $this->handle_expired_status);
 
-                    if ($this->processing_status == $status && ($order->status == 'pending' || $order->status == 'failed')) {
-                        $order->payment_complete();
-                        $order->add_order_note('Payment Completed');
-                        $woocommerce->cart->empty_cart();
-                    }
-
                     switch ($status) {
                         case 'New':
                         {
@@ -290,7 +291,7 @@ function woocommerce_unipayment_init()
                         }
                         case 'Paid':
                         {
-                            $order->add_order_note('Invoice : ' . $invoice_id . ' payment detected on blockchain');
+                            $order->add_order_note('Invoice : ' . $invoice_id . ' payment detected');
                             break;
                         }
 
@@ -325,6 +326,10 @@ function woocommerce_unipayment_init()
                             break;
                     }
 
+                    if ($this->processing_status == $status && ($order->status == 'pending' || $order->status == 'failed')) {
+                        $order->payment_complete();
+                        $woocommerce->cart->empty_cart();
+                    }
 
                     echo "SUCCESS";
                 } else {
