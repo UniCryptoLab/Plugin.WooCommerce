@@ -2,7 +2,7 @@
 /*
 Plugin Name: UniPayment Gateway for WooCommerce
 Description: UniPayment Gateway for WooCommerce
-Version: 1.0.1
+Version: 1.0.2
 Author: UniPayment
 Author URI: https://www.unipayment.io
 WC requires at least: 3.0
