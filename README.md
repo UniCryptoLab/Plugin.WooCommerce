@@ -1,5 +1,7 @@
 # UniPayment Gateway for WooCommerce
 
+## Please be aware that due to API interface updates, the current branch of our SDK has been deprecated, and new versions will be released gradually.
+
 ## Requirements
 This plugin requires the following:
 * [Woocommerce](https://wordpress.org/plugins/woocommerce/).
