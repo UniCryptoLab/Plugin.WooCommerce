@@ -1,0 +1,49 @@
+{
+  "name": "unipayment/sdk",
+  "description": "This SDK provides a convenient abstraction of UniPayment's Gateway API and allows developers to focus on payment flow/e-commerce integration rather than on the specific details of client-server interaction using the raw API.",
+  "license": "MIT",
+  "version": "2.0.0",
+  "keywords": [
+    "unipayment",
+    "bitcoin",
+    "eth",
+    "usdt",
+    "usdc",
+    "payment",
+    "gateway"
+  ],
+  "homepage": "https://unipayment.io",
+  "authors": [
+    {
+      "name": "vincent",
+      "homepage": "https://unipayment.io"
+    }
+  ],
+  "require": {
+    "php": "^8.0",
+    "ext-curl": "*",
+    "ext-json": "*",
+    "ext-mbstring": "*",
+    "guzzlehttp/guzzle": ">=7.9.2",
+    "symfony/serializer": ">=7.1.3",
+    "symfony/property-access": ">=v7.1.1",
+    "phpdocumentor/reflection-docblock": ">=5.4.1"
+  },
+  "require-dev": {
+    "phpunit/phpunit": ">=9.6.20",
+    "ramsey/uuid": ">=4.7.6"
+  },
+  "autoload": {
+    "psr-4": {
+      "UniPayment\\SDK\\": "lib/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "UniPayment\\SDK\\": "test/"
+    }
+  }
+}
+
+
+
