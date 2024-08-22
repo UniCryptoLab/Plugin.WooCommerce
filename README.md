@@ -17,7 +17,7 @@ Upload archive on plugin page [Wordpress's Adminstration Panels > Plugins > Add 
 After the plugin is installed, click on Activate.
 
 ## Document
-Please visit [how to use plugin for WooCommerce.](https://www.unipayment.io/en/docs/woocommerce-plugin/)
+Please visit [how to use plugin for WooCommerce.](https://help.unipayment.io/en/articles/7856672-woocommerce)
 
 ## Contribute
 
