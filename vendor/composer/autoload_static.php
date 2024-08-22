@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInita8a046826c32deea7cfbe44d1d0a728a
+class ComposerStaticInitf99b7bdf4a59077211f0df8a71d92026
 {
     public static $files = array (
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
@@ -44,10 +44,16 @@ class ComposerStaticInita8a046826c32deea7cfbe44d1d0a728a
         ),
         'P' => 
         array (
+            'Psr\\Log\\' => 8,
             'Psr\\Http\\Message\\' => 17,
             'Psr\\Http\\Client\\' => 16,
             'Psr\\Container\\' => 14,
+            'Psr\\Cache\\' => 10,
             'PHPStan\\PhpDocParser\\' => 21,
+        ),
+        'M' => 
+        array (
+            'Monolog\\' => 8,
         ),
         'G' => 
         array (
@@ -58,6 +64,8 @@ class ComposerStaticInita8a046826c32deea7cfbe44d1d0a728a
         'D' => 
         array (
             'Doctrine\\Deprecations\\' => 22,
+            'Doctrine\\Common\\Lexer\\' => 22,
+            'Doctrine\\Common\\Annotations\\' => 28,
         ),
     );
 
@@ -74,7 +82,7 @@ class ComposerStaticInita8a046826c32deea7cfbe44d1d0a728a
         ),
         'UniPayment\\SDK\\' => 
         array (
-            0 => __DIR__ . '/..' . '/unipayment/lib',
+            0 => __DIR__ . '/../..' . '/lib',
         ),
         'Symfony\\Polyfill\\Mbstring\\' => 
         array (
@@ -112,6 +120,10 @@ class ComposerStaticInita8a046826c32deea7cfbe44d1d0a728a
         array (
             0 => __DIR__ . '/..' . '/symfony/property-access',
         ),
+        'Psr\\Log\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/log/src',
+        ),
         'Psr\\Http\\Message\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/http-message/src',
@@ -125,9 +137,17 @@ class ComposerStaticInita8a046826c32deea7cfbe44d1d0a728a
         array (
             0 => __DIR__ . '/..' . '/psr/container/src',
         ),
+        'Psr\\Cache\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/cache/src',
+        ),
         'PHPStan\\PhpDocParser\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpstan/phpdoc-parser/src',
+        ),
+        'Monolog\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
         ),
         'GuzzleHttp\\Psr7\\' => 
         array (
@@ -145,6 +165,14 @@ class ComposerStaticInita8a046826c32deea7cfbe44d1d0a728a
         array (
             0 => __DIR__ . '/..' . '/doctrine/deprecations/lib/Doctrine/Deprecations',
         ),
+        'Doctrine\\Common\\Lexer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/doctrine/lexer/src',
+        ),
+        'Doctrine\\Common\\Annotations\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/doctrine/annotations/lib/Doctrine/Common/Annotations',
+        ),
     );
 
     public static $classMap = array (
@@ -155,9 +183,9 @@ class ComposerStaticInita8a046826c32deea7cfbe44d1d0a728a
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInita8a046826c32deea7cfbe44d1d0a728a::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInita8a046826c32deea7cfbe44d1d0a728a::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInita8a046826c32deea7cfbe44d1d0a728a::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitf99b7bdf4a59077211f0df8a71d92026::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitf99b7bdf4a59077211f0df8a71d92026::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitf99b7bdf4a59077211f0df8a71d92026::$classMap;
 
         }, null, ClassLoader::class);
     }

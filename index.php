@@ -2,7 +2,7 @@
 /*
 Plugin Name: UniPayment Gateway for WooCommerce
 Description: UniPayment Gateway for WooCommerce
-Version: 2.2.4
+Version: 2.2.7
 Author: UniPayment
 Author URI: https://www.unipayment.io
 WC requires at least: 3.0
@@ -251,8 +251,8 @@ function woocommerce_unipayment_init()
 
                 $hmac_signature  = '';
                 if (array_key_exists('hmac-signature', $header)) $hmac_signature = $header['hmac-signature'];                
-                if (array_key_exists('Hmac-Signature', $header)) $hmac_signature = $header['Hmac-Signature'];  
-                if (array_key_exists('HMAC-SIGNATURE', $header)) $hmac_signature = $header['HMAC-SIGNATURE']; 
+                if (array_key_exists('Hmac-Signature', $header)) $hmac_signature = $header['hmac-signature'];  
+                if (array_key_exists('HMAC-SIGNATURE', $header)) $hmac_signature = $header['hmac-signature']; 
 
                 if (empty($hmac_signature))  {              
                     echo "hmac-signature not found";
