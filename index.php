@@ -252,7 +252,7 @@ function woocommerce_unipayment_init()
                 $hmac_signature  = '';
                 if (array_key_exists('hmac-signature', $header)) $hmac_signature = $header['hmac-signature'];                
                 if (array_key_exists('Hmac-Signature', $header)) $hmac_signature = $header['Hmac-Signature'];  
-                if (array_key_exists('Hmac-Signature', $header)) $hmac_signature = $header['Hmac-Signature']; 
+                if (array_key_exists('HMAC-SIGNATURE', $header)) $hmac_signature = $header['HMAC-SIGNATURE']; 
 
                 if (empty($hmac_signature))  {              
                     echo "hmac-signature not found";
