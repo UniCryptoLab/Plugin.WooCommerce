@@ -60,21 +60,23 @@ UniPayment will send IPN (Instant Payment Notification) to plugin when status of
 
 == Screenshots ==
 
-1. UniPayment dashboard - create payment app
-2. UniPayment dashboard - copy AppId and ApiKey
-3. WordPress WooCommerce admin dashboard - UniPayment plugin settings
-4. WordPress website - UniPayment checkout option
-5. UniPayment hosted checkout - cryptocurrency selected
-6. UniPayment hosted checkout - blockchain network selected
-7. UniPayment hosted checkout - display payment information **Amount** and **Address***
-8. UniPayment hosted checkout - buyer make the payment then UniPayment detected
-9. UniPayment hosted checkout - UniPayment mark the invoice as paid after some confirmations
-10. UniPayment dashboard - the invoice previously paid is listed under the "Invoice" section
-11. UniPayment dashboard - the invoice details
-12. WordPress WooCommerce admin dashboard - order view
+1. UniPayment dashboard - create open client
+2. UniPayment dashboard - create payment app and get appId
+3. UniPayment dashboard - get webhook secret key
+4. WordPress WooCommerce admin dashboard - UniPayment plugin settings
+5. WordPress website - UniPayment checkout option
+6. UniPayment hosted checkout - select payment method
+7. UniPayment hosted checkout - buyer make the payment then UniPayment detected
+8. UniPayment hosted checkout - UniPayment mark the invoice as paid after some confirmations
+9. UniPayment dashboard - the invoice previously paid is listed under the "Invoice" section
+10. UniPayment dashboard - the invoice details
+11. WordPress WooCommerce admin dashboard - order view
 
 
 == Changelog ==
+= 2.2.8 =
+* update unipayment sdk to 2.0
+
 = 1.0.2 =
 * update unipayment sdk
 
