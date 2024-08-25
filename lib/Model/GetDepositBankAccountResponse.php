@@ -1,7 +1,7 @@
 <?php
 
 namespace UniPayment\SDK\Model;
-
+use JMS\Serializer\Annotation\Type;
 
 /**
  * Get Deposit Bank Account Response
@@ -15,7 +15,7 @@ class GetDepositBankAccountResponse
     private string $code;
 
     /**
-     * @var DepositBankAccount[]
+     *@Type("array<UniPayment\SDK\Model\DepositBankAccount>")
      */
     private array $data;
 

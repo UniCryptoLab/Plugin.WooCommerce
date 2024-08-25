@@ -1,9 +1,10 @@
 <?php
 
 namespace UniPayment\SDK\Model;
+use JMS\Serializer\Annotation\SerializedName;
+use JMS\Serializer\Annotation\Type;
 
 use DateTime;
-use Symfony\Component\Serializer\Annotation\SerializedName;
 
 /**
  *  Quote
@@ -48,6 +49,7 @@ class Quote
     private ?float $fee;
     /**
      * @SerializedName("valid_until")
+     * @Type("DateTime<'Y-m-d\TH:i:s'>")
      */
     private DateTime $validUtil;
 

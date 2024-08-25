@@ -1,7 +1,7 @@
 <?php
 
 namespace UniPayment\SDK\Model;
-use Symfony\Component\Serializer\Annotation\SerializedName;
+use JMS\Serializer\Annotation\SerializedName;
 
 /**
  * Create Invoice Request

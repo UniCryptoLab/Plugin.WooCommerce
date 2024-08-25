@@ -1,6 +1,7 @@
 <?php
 
 namespace UniPayment\SDK\Model;
+use JMS\Serializer\Annotation\Type;
 
 /**
  * Get Currencies Response
@@ -14,9 +15,9 @@ class GetCurrenciesResponse
     private string $code;
 
     /**
-     * @var Currency[]
+     * @Type("array<UniPayment\SDK\Model\Currency>")
      */
-    private array $data;
+    private array $data = [];
 
     public function getMsg(): string
     {

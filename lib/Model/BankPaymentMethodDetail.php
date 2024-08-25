@@ -1,11 +1,10 @@
 <?php
 
 namespace UniPayment\SDK\Model;
-
-use Symfony\Component\Serializer\Annotation\SerializedName;
+use JMS\Serializer\Annotation\SerializedName;
 
 /**
- * Internal Payment Method Detail
+ * Bank Payment Method Detail
  *
  * @category Class
  * @package  UniPayment\SDK\Model

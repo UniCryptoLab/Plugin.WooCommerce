@@ -1,8 +1,8 @@
 <?php
 
 namespace UniPayment\SDK\Model;
-
-use Symfony\Component\Serializer\Annotation\SerializedName;
+use JMS\Serializer\Annotation\SerializedName;
+use JMS\Serializer\Annotation\Type;
 
 /**
  * Beneficiary Page List
@@ -27,7 +27,7 @@ class BeneficiaryPageList
     private int $pageSize;
 
     /**
-     * @var Beneficiary[]
+     * @Type("array<UniPayment\SDK\Model\Beneficiary>")
      */
     private array $models;
 

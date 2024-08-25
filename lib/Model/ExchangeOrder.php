@@ -2,9 +2,9 @@
 
 namespace UniPayment\SDK\Model;
 
-
 use DateTime;
-use Symfony\Component\Serializer\Annotation\SerializedName;
+use JMS\Serializer\Annotation\SerializedName;
+use JMS\Serializer\Annotation\Type;
 
 /**
  * Exchange Order
@@ -27,12 +27,10 @@ class ExchangeOrder extends Quote
     private float $exchangeAmount;
 
     /**
-     * @var DateTime
-     */
-    /**
      * @SerializedName("create_time")
+     * @Type("DateTime<'Y-m-d\TH:i:s'>")
      */
-    private string $createTime;
+    private ?DateTime $createTime;
 
     public function getId(): string
     {
@@ -64,12 +62,12 @@ class ExchangeOrder extends Quote
         $this->exchangeAmount = $exchangeAmount;
     }
 
-    public function getCreateTime(): string
+    public function getCreateTime(): ?DateTime
     {
         return $this->createTime;
     }
 
-    public function setCreateTime(string $createTime): void
+    public function setCreateTime(?DateTime $createTime): void
     {
         $this->createTime = $createTime;
     }

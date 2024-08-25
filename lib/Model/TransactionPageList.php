@@ -1,9 +1,8 @@
 <?php
 
 namespace UniPayment\SDK\Model;
-
-use Symfony\Component\Serializer\Annotation\SerializedName;
-
+use JMS\Serializer\Annotation\SerializedName;
+use JMS\Serializer\Annotation\Type;
 /**
  * Query Wallet Transactions Response
  *
@@ -25,8 +24,9 @@ class TransactionPageList
      * @SerializedName("page_size")
      */
     private int $pageSize;
+
     /**
-     * @var Transaction[]
+     * @Type("array<UniPayment\SDK\Model\Transaction>")
      */
     private array $models;
 

@@ -10,7 +10,7 @@ use Monolog\Logger;
 
 class ApiClient
 {
-    private string $userAgent = 'unipayment_sdk_php/2.0.3';
+    private string $userAgent = 'unipayment_sdk_php/2.0.4';
     /**
      * @var Configuration
      */
@@ -25,7 +25,9 @@ class ApiClient
     {
         $this->config = $configuration;
         $this->logger = new Logger(ApiClient::class);
-        $this->logger->pushHandler(new StreamHandler($this->config->getDebugFile()));
+        if ($configuration->getDebug()) {
+            $this->logger->pushHandler(new StreamHandler($this->config->getDebugFile()));
+        }
     }
 
     /**

@@ -3,6 +3,8 @@
 namespace UniPayment\SDK\Model;
 
 use DateTime;
+use JMS\Serializer\Annotation\SerializedName;
+use JMS\Serializer\Annotation\Type;
 
 /**
  * Transaction
@@ -26,15 +28,13 @@ class Transaction
      * @SerializedName("ref_id")
      */
     private string $referenceId;
-    private TransactionData $data;
+    private ?TransactionData $data;
 
     /**
-     * @var DateTime
-     */
-    /**
      * @SerializedName("create_time")
+     * @Type("DateTime<'Y-m-d\TH:i:s'>")
      */
-    private string $createTime;
+    private DateTime $createTime;
 
     public function getId(): string
     {
@@ -116,12 +116,12 @@ class Transaction
         $this->referenceId = $referenceId;
     }
 
-    public function getData(): TransactionData
+    public function getData(): ?TransactionData
     {
         return $this->data;
     }
 
-    public function setData(TransactionData $data): void
+    public function setData(?TransactionData $data): void
     {
         $this->data = $data;
     }
@@ -129,12 +129,12 @@ class Transaction
     /**
      * @return DateTime
      */
-    public function getCreateTime(): string
+    public function getCreateTime(): DateTime
     {
         return $this->createTime;
     }
 
-    public function setCreateTime(string $createTime): void
+    public function setCreateTime(DateTime $createTime): void
     {
         $this->createTime = $createTime;
     }

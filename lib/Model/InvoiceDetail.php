@@ -1,6 +1,7 @@
 <?php
 
 namespace UniPayment\SDK\Model;
+use JMS\Serializer\Annotation\Type;
 
 /**
  * Invoice Detail
@@ -11,7 +12,7 @@ namespace UniPayment\SDK\Model;
 class InvoiceDetail extends Invoice
 {
     /**
-     * @var Transaction[]
+     * @Type("array<UniPayment\SDK\Model\Transaction>")
      */
     private array $transactions;
 

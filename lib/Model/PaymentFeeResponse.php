@@ -1,6 +1,7 @@
 <?php
 
 namespace UniPayment\SDK\Model;
+use JMS\Serializer\Annotation\Type;
 
 /**
  * Payment Fee Response
@@ -14,7 +15,7 @@ class PaymentFeeResponse
     private string $msg;
 
     /**
-     * @var PaymentFee[]
+     * @Type("array<UniPayment\SDK\Model\PaymentFee>")
      */
     private array $data;
 

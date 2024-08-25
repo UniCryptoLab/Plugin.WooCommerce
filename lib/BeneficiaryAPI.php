@@ -186,9 +186,6 @@ final class BeneficiaryAPI extends BaseClient
         return $getPaymentMethodListResponse;
     }
 
-    /**
-     * @throws UnipaymentSDKException
-     */
     private function getPaymentMethodDetail(string $transferMethod, string $detailJson): PaymentMethodDetail
     {
         $paymentMethodDetail = null;

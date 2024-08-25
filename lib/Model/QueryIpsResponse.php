@@ -2,6 +2,8 @@
 
 namespace UniPayment\SDK\Model;
 
+use JMS\Serializer\Annotation\Type;
+
 /**
  * Query Ips Response
  *
@@ -14,9 +16,9 @@ class QueryIpsResponse
     private string $code;
 
     /**
-     * @var string[]
+     * @Type("array<string>")
      */
-    private array $data;
+    private array $data = [];
 
     public function getMsg(): string
     {

@@ -1,6 +1,7 @@
 <?php
 
 namespace UniPayment\SDK\Model;
+use JMS\Serializer\Annotation\Type;
 
 
 /**
@@ -15,7 +16,7 @@ class GetDepositAddressResponse
     private string $code;
 
     /**
-     * @var DepositAddress[]
+     * @Type("array<UniPayment\SDK\Model\DepositAddress>")
      */
     private array $data;
 

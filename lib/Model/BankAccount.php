@@ -2,9 +2,6 @@
 
 namespace UniPayment\SDK\Model;
 
-
-use Symfony\Component\Serializer\Annotation\SerializedName;
-
 /**
  * Bank Account
  *

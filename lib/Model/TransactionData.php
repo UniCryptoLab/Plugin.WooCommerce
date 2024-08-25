@@ -2,6 +2,9 @@
 
 namespace UniPayment\SDK\Model;
 
+use DateTime;
+use JMS\Serializer\Annotation\Type;
+
 /**
  * Transaction Data
  *
@@ -25,7 +28,11 @@ class TransactionData
     private ?TransactionTarget $target = null;
     private ?string $network = null;
     private ?string $assetType = null;
-    private ?string $createTime = null;
+
+    /**
+     * @Type("DateTime<'Y-m-d\TH:i:s'>")
+     */
+    private ?DateTime $createTime = null;
     private ?string $transferMethod = null;
     private ?string $type = null;
 
@@ -179,12 +186,12 @@ class TransactionData
         $this->assetType = $assetType;
     }
 
-    public function getCreateTime(): ?string
+    public function getCreateTime(): ?DateTime
     {
         return $this->createTime;
     }
 
-    public function setCreateTime(?string $createTime): void
+    public function setCreateTime(?DateTime $createTime): void
     {
         $this->createTime = $createTime;
     }

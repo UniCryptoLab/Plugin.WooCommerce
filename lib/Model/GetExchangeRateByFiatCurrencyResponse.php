@@ -1,6 +1,7 @@
 <?php
 
 namespace UniPayment\SDK\Model;
+use JMS\Serializer\Annotation\Type;
 
 /**
  * Get Exchange Rat eBy Fiat Currency Response
@@ -14,9 +15,9 @@ class GetExchangeRateByFiatCurrencyResponse
     private string $code;
 
     /**
-     * @var ExchangeRate[]
+     * @Type("array<UniPayment\SDK\Model\ExchangeRate>")
      */
-    private array $data;
+    private array $data = [];
 
     public function getMsg(): string
     {

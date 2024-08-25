@@ -1,11 +1,16 @@
 <?php
 
 namespace UniPayment\SDK\Model;
+use JMS\Serializer\Annotation\Type;
 
 class ApiResponse
 {
     private string $code;
     private string $msg;
+
+    /**
+     * @Type("array<string, string>")
+     */
     private array $data;
 
     public function getCode(): string

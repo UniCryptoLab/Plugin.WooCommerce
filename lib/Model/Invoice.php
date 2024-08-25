@@ -2,8 +2,9 @@
 
 namespace UniPayment\SDK\Model;
 
-use Symfony\Component\Serializer\Annotation\SerializedName;
 use DateTime;
+use JMS\Serializer\Annotation\Type;
+use JMS\Serializer\Annotation\SerializedName;
 
 /**
  * Invoice
@@ -66,12 +67,14 @@ class Invoice
     private ?float $refundedPriceAmount;
     /**
      * @SerializedName("create_time")
+     * @Type("DateTime<'Y-m-d\TH:i:s'>")
      */
-    private string $createTime;
+    private ?DateTime $createTime;
     /**
      * @SerializedName("expiration_time")
+     * @Type("DateTime<'Y-m-d\TH:i:s'>")
      */
-    private string $expirationTime;
+    private ?DateTime $expirationTime;
     /**
      * @SerializedName("confirm_speed")
      */
@@ -88,6 +91,7 @@ class Invoice
 
     /**
      * @SerializedName("host_to_host_data")
+     * @Type("array<string, string>")
      */
     private ?array $hostToHostData = null;
 
@@ -237,12 +241,12 @@ class Invoice
     /**
      * @return DateTime
      */
-    public function getCreateTime(): string
+    public function getCreateTime(): ?DateTime
     {
         return $this->createTime;
     }
 
-    public function setCreateTime(string $createTime): void
+    public function setCreateTime(?DateTime $createTime): void
     {
         $this->createTime = $createTime;
     }
@@ -250,12 +254,12 @@ class Invoice
     /**
      * @return string
      */
-    public function getExpirationTime(): string
+    public function getExpirationTime(): ?DateTime
     {
         return $this->expirationTime;
     }
 
-    public function setExpirationTime(string $expirationTime): void
+    public function setExpirationTime(?DateTime $expirationTime): void
     {
         $this->expirationTime = $expirationTime;
     }

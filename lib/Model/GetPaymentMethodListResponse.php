@@ -1,6 +1,7 @@
 <?php
 
 namespace UniPayment\SDK\Model;
+use JMS\Serializer\Annotation\Type;
 
 /**
  * Get Payment Method List Response
@@ -13,7 +14,7 @@ class GetPaymentMethodListResponse
     private string $code;
     private string $msg;
     /**
-     * @var PaymentMethod[]
+     * @Type("array<UniPayment\SDK\Model\PaymentMethod>")
      */
     private array $data;
 

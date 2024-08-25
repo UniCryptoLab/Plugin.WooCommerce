@@ -1,9 +1,10 @@
 <?php
 
 namespace UniPayment\SDK\Model;
+use JMS\Serializer\Annotation\SerializedName;
+use JMS\Serializer\Annotation\Type;
 
 use DateTime;
-use Symfony\Component\Serializer\Annotation\SerializedName;
 
 /**
  * Payment
@@ -31,7 +32,7 @@ class Payment
      * @SerializedName("from_account_id")
      */
     private ?string $fromAccountId;
-    private PaymentDestination $destination;
+    private ?PaymentDestination $destination;
     private float $amount;
     private float $fee;
     /**
@@ -44,12 +45,14 @@ class Payment
     private PaymentStatus $status;
     /**
      * @SerializedName("create_time")
+     * @Type("DateTime<'Y-m-d\TH:i:s'>")
      */
-    private string $createTime;
+    private DateTime $createTime;
     /**
-     * @SerializedName("update_time")
+     * @SerializedName("create_time")
+     * @Type("DateTime<'Y-m-d\TH:i:s'>")
      */
-    private string $updateTime;
+    private ?DateTime $updateTime;
 
     public function getId(): string
     {
@@ -111,12 +114,12 @@ class Payment
         $this->fromAccountId = $fromAccountId;
     }
 
-    public function getDestination(): PaymentDestination
+    public function getDestination(): ?PaymentDestination
     {
         return $this->destination;
     }
 
-    public function setDestination(PaymentDestination $destination): void
+    public function setDestination(?PaymentDestination $destination): void
     {
         $this->destination = $destination;
     }
@@ -191,22 +194,22 @@ class Payment
         $this->status = $status;
     }
 
-    public function getCreateTime(): string
+    public function getCreateTime(): DateTime
     {
         return $this->createTime;
     }
 
-    public function setCreateTime(string $createTime): void
+    public function setCreateTime(DateTime $createTime): void
     {
         $this->createTime = $createTime;
     }
 
-    public function getUpdateTime(): string
+    public function getUpdateTime(): DateTime
     {
         return $this->updateTime;
     }
 
-    public function setUpdateTime(string $updateTime): void
+    public function setUpdateTime(DateTime $updateTime): void
     {
         $this->updateTime = $updateTime;
     }

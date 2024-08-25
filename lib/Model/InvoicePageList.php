@@ -1,8 +1,8 @@
 <?php
 
 namespace UniPayment\SDK\Model;
-
-use Symfony\Component\Serializer\Annotation\SerializedName;
+use JMS\Serializer\Annotation\SerializedName;
+use JMS\Serializer\Annotation\Type;
 
 /**
  * Invoice Page List Class Doc Comment
@@ -27,7 +27,7 @@ class InvoicePageList
     private int $pageSize;
 
     /**
-     * @var Invoice[]
+     * @Type("array<UniPayment\SDK\Model\Invoice>")
      */
     private array $models;
 

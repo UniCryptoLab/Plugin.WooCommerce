@@ -1,9 +1,8 @@
 <?php
 
 namespace UniPayment\SDK\Model;
-
-
-use Symfony\Component\Serializer\Annotation\SerializedName;
+use JMS\Serializer\Annotation\SerializedName;
+use JMS\Serializer\Annotation\Type;
 
 /**
  * Exchange Order Page List
@@ -28,7 +27,7 @@ class ExchangeOrderPageList
     private int $pageSize;
 
     /**
-     * @var ExchangeOrder[]
+     * @Type("array<UniPayment\SDK\Model\ExchangeOrder>")
      */
     private array $models;
 

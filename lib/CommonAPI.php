@@ -21,7 +21,7 @@ final class CommonAPI extends BaseClient
     /**
      * @throws UnipaymentSDKException
      */
-    public function ping($usePost = False): PingResponse
+    public function ping($usePost = false): PingResponse
     {
         $accessToken = $this->getAccessToken();
         $headers = [

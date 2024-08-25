@@ -1,6 +1,7 @@
 <?php
 
 namespace UniPayment\SDK\Model;
+use JMS\Serializer\Annotation\Type;
 
 /**
  * Get Wallet Balances Response
@@ -14,7 +15,7 @@ class GetWalletBalancesResponse
     private string $code;
 
     /**
-     * @var WalletBalance[]
+     * @Type("array<UniPayment\SDK\Model\WalletBalance>")
      */
     private array $data;
 
