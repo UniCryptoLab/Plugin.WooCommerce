@@ -66,6 +66,11 @@ class CreateInvoiceRequest
      */
     private ConfirmSpeed $confirmSpeed;
 
+    /**
+     * @SerializedName("buyer_info")
+     */
+    private ?BuyerInfo $buyerInfo;
+
     public function getAppId(): ?string
     {
         return $this->appId;
@@ -215,4 +220,15 @@ class CreateInvoiceRequest
     {
         $this->confirmSpeed = $confirmSpeed;
     }
+
+    public function getBuyerInfo(): ?BuyerInfo
+    {
+        return $this->buyerInfo;
+    }
+
+    public function setBuyerInfo(?BuyerInfo $buyerInfo): void
+    {
+        $this->buyerInfo = $buyerInfo;
+    }
+
 }

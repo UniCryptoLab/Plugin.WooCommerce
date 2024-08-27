@@ -10,7 +10,7 @@ use Monolog\Logger;
 
 class ApiClient
 {
-    private string $userAgent = 'unipayment_sdk_php/2.0.4';
+    private string $userAgent = 'unipayment_sdk_php/2.0.5';
     /**
      * @var Configuration
      */

@@ -2,7 +2,7 @@
 /*
 Plugin Name: UniPayment Gateway for WooCommerce
 Description: UniPayment Gateway for WooCommerce
-Version: 2.2.8
+Version: 2.2.9
 Author: UniPayment
 Author URI: https://www.unipayment.io
 WC requires at least: 3.0
@@ -214,6 +214,25 @@ function woocommerce_unipayment_init()
 	        
 	        $createInvoiceRequest->setTitle($desc);
 	        $createInvoiceRequest->setDescription($desc);   
+
+            $BuyerName = $order->get_billing_first_name().' '.$order->get_billing_last_name();
+
+            $country = $order->get_billing_country();
+            $StateCode = $order->get_billing_state();
+            $StateName = '';
+            if (isset($StateCode)) $StateName =  WC()->countries->get_states( $country )[$StateCode];
+
+            $buyerInfo = new \UniPayment\SDK\Model\BuyerInfo();
+            $buyerInfo->setName($BuyerName);
+            $buyerInfo->setEmail($order->get_billing_email());
+            $buyerInfo->setAddress1($order->get_billing_address_1());
+            $buyerInfo->setAddress2($order->get_billing_address_2());
+            $buyerInfo->setCity($order->get_billing_city());
+            $buyerInfo->setState($StateName);
+            $buyerInfo->setCountry($order->get_billing_country());
+            $buyerInfo->setZipCode($order->get_billing_postcode());
+            $createInvoiceRequest->setBuyerInfo($buyerInfo);
+
             
             $billingAPI  = new \UniPayment\SDK\BillingAPI($configuration);
 
