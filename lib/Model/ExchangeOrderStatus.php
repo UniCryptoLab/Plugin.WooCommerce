@@ -13,5 +13,5 @@ class ExchangeOrderStatus
     const PLACED = 'PLACED';
     const PROCESSING = 'PROCESSING';
     const COMPLETED = 'COMPLETED';
-    const FAIL = 'FAIL';
+    const FAILED = 'FAILED';
 }

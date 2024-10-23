@@ -15,6 +15,6 @@ class PaymentStatus
     const CONFIRMED = 'CONFIRMED';
     const REJECTED = 'REJECTED';
     const APPROVED = 'APPROVED';
-    const SUCCESS = 'SUCCESS';
-    const FAIL = 'FAIL';
+    const COMPLETED = 'COMPLETED';
+    const FAILED = 'FAILED';
 }
